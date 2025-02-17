@@ -1,14 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { MessageDTO } from './common/dto';
 
 @Injectable()
 export class AppService {
-  constructor(private readonly configService: ConfigService) {}
-
-  getOpenWeatherApiKey(): Record<string, string> {
-    return {
-      OPEN_WEATHER_API_KEY:
-        this.configService.get('OPEN_WEATHER_API_KEY') ?? 'NO KEY',
-    };
+  healthCheck(): MessageDTO {
+    return { message: 'up' };
   }
 }
