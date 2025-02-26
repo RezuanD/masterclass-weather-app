@@ -35,4 +35,16 @@ export class OpenWeatherController {
   getCityWeather(@Query('cityName') cityName: string): Promise<WeatherDto> {
     return this.openWeatherService.getWeatherByCityName(cityName);
   }
+
+  @Get('/weather-by-coords')
+  @ApiResponse({
+    type: WeatherDto,
+    status: 200,
+  })
+  getCoordsWeather(
+    @Query('lon') lon: number,
+    @Query('lat') lat: number,
+  ): Promise<WeatherDto> {
+    return this.openWeatherService.getWeatherByCords(lon, lat);
+  }
 }

@@ -55,6 +55,29 @@ export class OpenWeatherService {
     return { lon: firstCityFromResponse.lon, lat: firstCityFromResponse.lat };
   }
 
+  public async getWeatherByCords(
+    lon: number,
+    lat: number,
+  ): Promise<WeatherDto> {
+    const response = await firstValueFrom(
+      this.httpService.get<OpenWeatherCordsWeatherData>(
+        `${this.openWeatherAPIWeatherAPIURL}?lat=${lat}&lon=${lon}&units=${this.measureUnits}&appid=${this.openWeatherAPIKey}`,
+      ),
+    );
+
+    const cityWeatherData = response.data;
+
+    return {
+      cords: { lon, lat },
+      temperature: cityWeatherData.main.temp,
+      feelsLikeTemperature: cityWeatherData.main.feels_like,
+      atmosphericPressure: cityWeatherData.main.pressure,
+      windSpeed: cityWeatherData.wind.speed,
+      countryCode: cityWeatherData.sys.country,
+      cityName: cityWeatherData.name,
+    };
+  }
+
   public async getWeatherByCityName(cityName: string): Promise<WeatherDto> {
     const cityCords = await this.getCityCordsByName(cityName);
 
